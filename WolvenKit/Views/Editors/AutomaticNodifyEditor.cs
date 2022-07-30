@@ -167,21 +167,25 @@ namespace WolvenKit.Views.Editors
                 }
             }
 
-            foreach (INodeConnection connection in Connections)
+            // Use-case: In case the quest has no connections
+            if(Connections != null)
             {
-                if (socketNodeLookup.ContainsKey(connection.Source.GetHashCode()) &&
-                    socketNodeLookup.ContainsKey(connection.Destination.GetHashCode()))
+                foreach (INodeConnection connection in Connections)
                 {
-                    var source = socketNodeLookup[connection.Source.GetHashCode()];
-                    var dest = socketNodeLookup[connection.Destination.GetHashCode()];
-                    var edge = new Edge(nodes[source], nodes[dest]);
-                    edge.TargetPort = new FloatingPort(
-                        edge.Target.BoundaryCurve,
-                        new Microsoft.Msagl.Core.Geometry.Point(-200, 0));
-                    edge.SourcePort = new FloatingPort(
-                        edge.Source.BoundaryCurve,
-                        new Microsoft.Msagl.Core.Geometry.Point(200, 0));
-                    graph.Edges.Add(edge);
+                    if (socketNodeLookup.ContainsKey(connection.Source.GetHashCode()) &&
+                        socketNodeLookup.ContainsKey(connection.Destination.GetHashCode()))
+                    {
+                        var source = socketNodeLookup[connection.Source.GetHashCode()];
+                        var dest = socketNodeLookup[connection.Destination.GetHashCode()];
+                        var edge = new Edge(nodes[source], nodes[dest]);
+                        edge.TargetPort = new FloatingPort(
+                            edge.Target.BoundaryCurve,
+                            new Microsoft.Msagl.Core.Geometry.Point(-200, 0));
+                        edge.SourcePort = new FloatingPort(
+                            edge.Source.BoundaryCurve,
+                            new Microsoft.Msagl.Core.Geometry.Point(200, 0));
+                        graph.Edges.Add(edge);
+                    }
                 }
             }
 
